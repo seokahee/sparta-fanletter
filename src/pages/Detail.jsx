@@ -5,7 +5,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { getFormattedDate } from "util/date";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteLetter, editLetter } from "redux/modules/letters";
+import { deleteLetter, editLetter } from "redux/modules/lettersSlice";
 
 export default function Detail() {
   const dispatch = useDispatch();
@@ -99,6 +99,7 @@ const DetailWrapper = styled.section`
   gap: 12px;
   width: 700px;
   min-height: 400px;
+  border-radius: 5px;
 `;
 
 const UserInfo = styled.div`
@@ -122,7 +123,7 @@ const ToMember = styled.span`
 `;
 
 const Content = styled.p`
-  font-size: 24px;
+  font-size: 20px;
   line-height: 30px;
   padding: 12px;
   background-color: black;

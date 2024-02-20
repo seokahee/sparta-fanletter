@@ -13,10 +13,15 @@ const BtnWrapper = styled.div`
   justify-content: flex-end;
   align-items: center;
   & button {
-    background-color: black;
+    background-color: #808080;
     color: white;
     font-size: 16px;
     padding: 6px 12px;
+    border: none;
+    border-radius: 10px;
     cursor: pointer;
+    &:hover {
+      color: black;
+    }
   }
 `;

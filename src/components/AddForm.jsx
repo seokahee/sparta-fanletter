@@ -3,15 +3,14 @@ import styled from "styled-components";
 import { v4 as uuid } from "uuid";
 import Button from "./common/Button";
 import { useDispatch } from "react-redux";
-import { addLetter } from "redux/modules/letters";
+import { addLetter } from "redux/modules/lettersSlice";
 
 export default function AddForm() {
-  // const { setLetters } = useContext(LetterContext);
   const dispatch = useDispatch();
 
   const [nickname, setNickname] = useState("");
   const [content, setContent] = useState("");
-  const [member, setMember] = useState("카리나");
+  const [member, setMember] = useState("그리즐리");
 
   const onAddLetter = (event) => {
     event.preventDefault();
@@ -54,10 +53,9 @@ export default function AddForm() {
       <SelectWrapper>
         <label>누구에게 보내실 건가요?</label>
         <select onChange={(event) => setMember(event.target.value)}>
-          <option>카리나</option>
-          <option>윈터</option>
-          <option>닝닝</option>
-          <option>지젤</option>
+          <option>그리즐리</option>
+          <option>판다</option>
+          <option>아이스베어</option>
         </select>
       </SelectWrapper>
       <Button text="팬레터 등록" />
@@ -71,7 +69,7 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  width: 500px;
+  width: 30%;
   border-radius: 12px;
   margin: 20px 0;
 `;
@@ -97,6 +95,6 @@ const InputWrapper = styled.div`
 const SelectWrapper = styled(InputWrapper)`
   justify-content: flex-start;
   & label {
-    width: 170px;
+    width: 35%;
   }
 `;

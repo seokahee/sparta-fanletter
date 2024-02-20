@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { setMember } from "redux/modules/member";
+import { setMember } from "redux/modules/memberSlice";
 
 export default function Tabs() {
   const activeMember = useSelector((state) => state.member);
@@ -13,10 +13,9 @@ export default function Tabs() {
   };
   return (
     <TabsWrapper onClick={onActiveMember}>
-      <Tab $activeMember={activeMember}>카리나</Tab>
-      <Tab $activeMember={activeMember}>윈터</Tab>
-      <Tab $activeMember={activeMember}>닝닝</Tab>
-      <Tab $activeMember={activeMember}>지젤</Tab>
+      <Tab $activeMember={activeMember}>그리즐리</Tab>
+      <Tab $activeMember={activeMember}>판다</Tab>
+      <Tab $activeMember={activeMember}>아이스베어</Tab>
     </TabsWrapper>
   );
 }
@@ -28,13 +27,14 @@ const TabsWrapper = styled.ul`
   padding: 12px;
   gap: 12px;
   border-radius: 12px;
+  width: 30%;
 `;
 
 const Tab = styled.li`
   ${(props) => {
     if (props.$activeMember === props.children) {
       return css`
-        background-color: yellow;
+        background-color: #eee;
         color: black;
       `;
     }
@@ -45,7 +45,7 @@ const Tab = styled.li`
   }}
 
   font-size: 20px;
-  width: 80px;
+  width: 30%;
   text-align: center;
   padding: 12px 6px;
   border-radius: 12px;

@@ -12,10 +12,7 @@ export default function LetterList() {
   return (
     <ListWrapper>
       {filteredLetters.length === 0 ? (
-        <p>
-          {activeMember}에게 남겨진 팬레터가 없습니다. 첫 번째 팬레터의 주인공이
-          되보세요!
-        </p>
+        <p>{activeMember}에게 남겨진 팬레터가 없습니다. </p>
       ) : (
         filteredLetters.map((letter) => (
           <LetterCard key={letter.id} letter={letter} />
@@ -27,11 +24,11 @@ export default function LetterList() {
 
 const ListWrapper = styled.ul`
   background-color: black;
+  color: white;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 500px;
+  width: 30%;
   border-radius: 12px;
-  padding: 12px;
-  color: white;
+  padding: 1%;
 `;
