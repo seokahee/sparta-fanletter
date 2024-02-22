@@ -4,8 +4,8 @@ import axios from "axios";
 // baseURL에 .env 파일에 설정한 서버 주소를 담아준다
 // timeout은 요청 후 응답 시간이 5초를 넘으면 오류 메세지가 출력된다
 const instance = axios.create({
-  baseURL: process.env.REACT_APP_SERVER_URL,
-  timeout: 500,
+  baseURL: "https://moneyfulpublicpolicy.co.kr",
+  timeout: 1000,
 });
 
 // interceptors를 이용해 요청-응답 상태 확인
