@@ -1,3 +1,4 @@
+import Layout from "components/Layout";
 import Detail from "pages/Detail";
 import Home from "pages/Home";
 import LoginPage from "pages/LoginPage";
@@ -12,10 +13,12 @@ export default function Router() {
     <BrowserRouter>
       {isLogin ? (
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/detail/:id" element={<Detail />} />
-          <Route path="/myPage" element={<MyPage />} />
-          <Route path="*" element={<Navigate replace to="/" />} />
+          <Route element={<Layout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/detail/:id" element={<Detail />} />
+            <Route path="/myPage" element={<MyPage />} />
+            <Route path="*" element={<Navigate replace to="/" />} />
+          </Route>
         </Routes>
       ) : (
         <Routes>
