@@ -82,14 +82,21 @@ function LoginPage() {
       return userPwdRef.current.focus();
     }
     try {
-      const aboutUserLogs = await api.post("/login", {
+      const { data } = await api.post("/login", {
         id: userId,
         password: userPwd,
       });
-      console.log("aboutUserLogs", aboutUserLogs);
+      console.log("data", data);
 
       // 디스패치로 로그인 함수 호출, 페이로드로 토큰 전달
-      dispatch(login(aboutUserLogs.data.accessToken));
+      dispatch(
+        login({
+          accessToken: data.accessToken,
+          nickname: data.nickname,
+          avatar: data.avatar,
+          userId: data.userId,
+        })
+      );
     } catch (error) {
       console.log("error", error);
       toast(error.response.data.message);
