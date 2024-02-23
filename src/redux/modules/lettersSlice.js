@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import api from "../../axios/api";
+import { JsonApi } from "../../axios/api";
 
 // 비동기 통신을 위한 state 설정
 const initialState = {
@@ -10,15 +10,31 @@ const initialState = {
 };
 
 // thunk를 이용한 비동기 함수 (db와 ui의 값을 동일하게 유지하기 위해)
+export const __getLetter = createAsyncThunk(
+  "getLetter",
+  async (payload, thunkAPi) => {
+    try {
+      // 등록된 편지 불러오기
+      const { data } = await JsonApi.get("/letters");
+
+      // 편지 목록 내보내기
+      return data;
+    } catch (error) {
+      console.log("오류 발생");
+      return thunkAPi.rejectWithValue(error);
+    }
+  }
+);
+
 export const __addLetter = createAsyncThunk(
-  "addLertter",
+  "addLetter",
   async (payload, thunkAPi) => {
     try {
       // 새로운 편지 등록
-      await api.post("http://localhost:5000/letters", payload);
+      await JsonApi.post("/letters", payload);
 
       // 등록된 편지 불러오기
-      const { data } = await api.get("http://localhost:5000/letters");
+      const { data } = await JsonApi.get("/letters");
 
       // 편지 목록 내보내기
       return data;
@@ -62,8 +78,20 @@ const letterSlice = createSlice({
       state.isLoading = false;
       state.isError = true;
     });
+
+    builder.addCase(__getLetter.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isError = false;
+      state.letters = action.payload;
+      // action.payload = data
+    });
+    builder.addCase(__getLetter.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+    });
     builder.addMatcher(
-      (action) => action.type === __addLetter.pending.type,
+      (action) =>
+        action.type === __getLetter.pending.type || __addLetter.pending.type,
       (state, action) => {
         state.isLoading = true;
         state.isError = false;

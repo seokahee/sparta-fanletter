@@ -1,3 +1,13 @@
 {
-  "letters": []
+  "letters": [
+    {
+      "id": "209b1627-e482-4a28-9600-f1d7e5672317",
+      "nickname": "관리자",
+      "content": "판다아아아ㅏㅏ",
+      "avatar": "null",
+      "writedTo": "그리즐리",
+      "createdAt": "2024-02-22T16:31:22.147Z",
+      "userId": "admin"
+    }
+  ]
 }

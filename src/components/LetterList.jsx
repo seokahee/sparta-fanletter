@@ -1,15 +1,24 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { __getLetter } from "redux/modules/lettersSlice";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
 import LetterCard from "./LetterCard";
 
 export default function LetterList() {
   const activeMember = useSelector((state) => state.member);
-  // const letters = useSelector((state) => state.letters);
-  const letters = useSelector((state) => state.letters.letter);
+  const letters = useSelector((state) => state.letters.letters); // state.리듀서. db에 저장된 letters[](initialState에 들어있는거)
+  const dispatch = useDispatch();
+
+  console.log("state.letters.letters", letters);
+
+  useEffect(() => {
+    dispatch(__getLetter());
+  }, [dispatch]);
 
   const filteredLetters = letters.filter(
     (letter) => letter.writedTo === activeMember
   );
+
   return (
     <ListWrapper>
       {filteredLetters.length === 0 ? (

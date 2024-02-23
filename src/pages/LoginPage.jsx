@@ -1,10 +1,9 @@
+import { authApi } from "../axios/api";
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { login } from "redux/modules/authSlice";
 import styled from "styled-components";
-import api from "../axios/api";
 function LoginPage() {
   // input states
   const [userId, setUserId] = useState("");
@@ -12,7 +11,6 @@ function LoginPage() {
   const [userNickName, setUserNickName] = useState("");
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   // 포커스를 위한 useRef
   const userIdRef = useRef(null);
@@ -52,7 +50,7 @@ function LoginPage() {
       return userNickNameRef.current.focus();
     }
     try {
-      await api.post("/register", {
+      await authApi.post("/register", {
         id: userId,
         password: userPwd,
         nickname: userNickName,
@@ -82,7 +80,7 @@ function LoginPage() {
       return userPwdRef.current.focus();
     }
     try {
-      const { data } = await api.post("/login", {
+      const { data } = await authApi.post("/login", {
         id: userId,
         password: userPwd,
       });

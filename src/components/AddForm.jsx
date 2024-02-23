@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addLetter } from "redux/modules/lettersSlice";
+import { __addLetter } from "redux/modules/lettersSlice";
 import styled from "styled-components";
 import { v4 as uuid } from "uuid";
 import Button from "./common/Button";
@@ -28,7 +28,7 @@ export default function AddForm() {
       userId,
     };
 
-    dispatch(addLetter(newLetter));
+    dispatch(__addLetter(newLetter));
     setContent("");
   };
 
