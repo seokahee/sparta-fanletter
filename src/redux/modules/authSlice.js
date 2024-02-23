@@ -1,4 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { JsonApi, authApi } from "axios/api";
+import { toast } from "react-toastify";
 
 // 로그인 상태 초기값
 const initialState = {
@@ -8,6 +10,37 @@ const initialState = {
   avatar: localStorage.getItem("avatar"),
   userId: localStorage.getItem("userId"),
 };
+
+export const __editProfile = createAsyncThunk(
+  "editProfile",
+  async (payload, thunkAPI) => {
+    try {
+      const { data } = await authApi.patch("/profile", payload, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      const editingObj = {};
+      const { nickname, avatar } = data;
+      if (nickname) editingObj.nickname = nickname;
+      if (avatar) editingObj.avatar = avatar;
+
+      const userId = localStorage.getItem("userId");
+      const { data: myLetters } = await JsonApi.get(
+        `/letters?userId=${userId}`
+      );
+
+      for (const myletter of myLetters) {
+        await JsonApi.patch(`letters/${myLetters.id}`, editingObj);
+      }
+
+      return data;
+    } catch (error) {
+      console.log("error", error);
+      return thunkAPI.rejectWithValue;
+    }
+  }
+);
 
 // actionCreator , reducer 생성
 const authSlice = createSlice({
@@ -36,6 +69,32 @@ const authSlice = createSlice({
       //  특정 키에 해당하는 값 제거
       // localStorage.removeItem("accessToken")
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(__editProfile.fulfilled, (state, action) => {
+      const { nickname, avatar } = action.payload;
+      if (avatar) {
+        localStorage.setItem("avatar", avatar);
+        state.avatar = avatar;
+      }
+      if (nickname) {
+        localStorage.setItem("nickname", nickname);
+        state.nickname = nickname;
+      }
+      state.isLoading = false;
+      toast.success("프로필 변경이 완료되었습니다.");
+    });
+    builder.addCase(__editProfile.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+    });
+    builder.addMatcher(
+      (action) => action.type === __editProfile,
+      (state, action) => {
+        state.isLoading = true;
+        state.isError = false;
+      }
+    );
   },
 });
 
