@@ -4,7 +4,7 @@ import { JsonApi } from "../../axios/api";
 // 비동기 통신을 위한 state 설정
 const initialState = {
   letters: [], // 팬레터 담는 곳
-  isLoading: false, // 로그인 요청 중인지 여부
+  isLoading: true, // 로그인 요청 중인지 여부
   isError: false, // 로그인 요청 중 에러가 발생했는지 여부
   error: null, // 로그인 요청 중 에러 메시지
 };
@@ -37,6 +37,22 @@ export const __addLetter = createAsyncThunk(
       const { data } = await JsonApi.get("/letters");
 
       // 편지 목록 내보내기
+      return data;
+    } catch (error) {
+      console.log("오류 발생");
+      return thunkAPi.rejectWithValue(error);
+    }
+  }
+);
+
+export const __deleteLetter = createAsyncThunk(
+  "deleteLetter",
+  async (payload, thunkAPi) => {
+    try {
+      await JsonApi.delete(`/letters/${payload}`);
+
+      const { data } = await JsonApi.get("/letters");
+
       return data;
     } catch (error) {
       console.log("오류 발생");
@@ -89,9 +105,22 @@ const letterSlice = createSlice({
       state.isLoading = false;
       state.isError = true;
     });
+
+    builder.addCase(__deleteLetter.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isError = false;
+      state.letters = action.payload;
+      // action.payload = data
+    });
+    builder.addCase(__deleteLetter.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+    });
     builder.addMatcher(
       (action) =>
-        action.type === __getLetter.pending.type || __addLetter.pending.type,
+        action.type === __getLetter.pending.type ||
+        __addLetter.pending.type ||
+        __deleteLetter,
       (state, action) => {
         state.isLoading = true;
         state.isError = false;
