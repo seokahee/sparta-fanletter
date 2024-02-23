@@ -10,14 +10,16 @@ import { deleteLetter, editLetter } from "redux/modules/lettersSlice";
 export default function Detail() {
   const dispatch = useDispatch();
   const letters = useSelector((state) => state.letters);
+  const myId = useSelector((state) => state.auth.userId);
 
   const [isEditing, setIsEditing] = useState(false);
   const [editingText, setEditingText] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
-  const { avatar, nickname, createdAt, writedTo, content } = letters.find(
-    (letter) => letter.id === id
-  );
+  const { avatar, nickname, createdAt, writedTo, content, userId } =
+    letters.find((letter) => letter.id === id);
+
+  const isUser = myId === userId;
 
   const onDeleteBtn = () => {
     const answer = window.confirm("정말로 삭제하시겠습니까?");
@@ -65,10 +67,12 @@ export default function Detail() {
         ) : (
           <>
             <Content>{content}</Content>
-            <BtnsWrapper>
-              <Button text="수정" onClick={() => setIsEditing(true)} />
-              <Button text="삭제" onClick={onDeleteBtn} />
-            </BtnsWrapper>
+            {isUser && (
+              <BtnsWrapper>
+                <Button text="수정" onClick={() => setIsEditing(true)} />
+                <Button text="삭제" onClick={onDeleteBtn} />
+              </BtnsWrapper>
+            )}
           </>
         )}
       </DetailWrapper>
