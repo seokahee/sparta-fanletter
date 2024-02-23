@@ -61,6 +61,22 @@ export const __deleteLetter = createAsyncThunk(
   }
 );
 
+export const __editLetter = createAsyncThunk(
+  "editLetter",
+  async ({ id, editingText }, thunkAPi) => {
+    try {
+      await JsonApi.patch(`/letters/${id}`, { content: editingText });
+
+      const { data } = await JsonApi.get("/letters");
+
+      return data;
+    } catch (error) {
+      console.log("오류 발생");
+      return thunkAPi.rejectWithValue(error);
+    }
+  }
+);
+
 const letterSlice = createSlice({
   name: "letter",
   initialState,
@@ -113,6 +129,17 @@ const letterSlice = createSlice({
       // action.payload = data
     });
     builder.addCase(__deleteLetter.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+    });
+
+    builder.addCase(__editLetter.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isError = false;
+      state.letters = action.payload;
+      // action.payload = data
+    });
+    builder.addCase(__editLetter.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
     });

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   __deleteLetter,
+  __editLetter,
   __getLetter,
   editLetter,
 } from "redux/modules/lettersSlice";
@@ -31,7 +32,7 @@ export default function Detail() {
   const onEditDone = () => {
     if (!editingText) return alert("수정사항이 없습니다.");
 
-    dispatch(editLetter({ id, editingText }));
+    dispatch(__editLetter({ id, editingText }));
     setIsEditing(false);
     setEditingText("");
   };
